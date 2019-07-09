@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.victor_pc.tictactoe.model.Session;
 import com.example.victor_pc.tictactoe.model.User;
@@ -50,7 +51,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             values.put("Lose", 0);
             db.insert("User", null, values);
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
         return true;
     }
@@ -63,9 +64,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             if(cursor.moveToFirst()) {
                 return true;
             }
-            else return false;
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
         return false;
     }
@@ -76,11 +76,11 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         String query = String.format("SELECT * FROM User WHERE Email=\"%s\"", Session.email);
         cursor = db.rawQuery(query, new String[]{});
         if(cursor.moveToFirst()) {
-            user.setUsername(cursor.getString(0));
-            user.setEmail(cursor.getString(1));
-            user.setTotalMatch(cursor.getInt(3));
-            user.setWin(cursor.getInt(4));
-            user.setLose(cursor.getInt(5));
+            user.setUsername(cursor.getString(cursor.getColumnIndex("Username")));
+            user.setEmail(cursor.getString(cursor.getColumnIndex("Email")));
+            user.setTotalMatch(cursor.getInt(cursor.getColumnIndex("Matches")));
+            user.setWin(cursor.getInt(cursor.getColumnIndex("Win")));
+            user.setLose(cursor.getInt(cursor.getColumnIndex("Lose")));
         }
         return user;
     }
@@ -97,22 +97,14 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertStatus(int id) {
-        User user = getHomeData();
+    public boolean insertStatus(int matches, int win, int lose) {
         db = this.getWritableDatabase();
-        int matches = user.getTotalMatch();
         String selection = "Email LIKE ?";
         String arg[] = {Session.email};
         ContentValues values = new ContentValues();
-        values.put("Matches", matches+1);
-        if(id == 1) {
-            int win = user.getWin();
-            values.put("Win", win+1);
-        }
-        else if(id == 2) {
-            int lose = user.getLose();
-            values.put("Lose", lose+1);
-        }
+        values.put("Matches", matches);
+        values.put("Win", win);
+        values.put("Lose", lose);
         db.update("User", values, selection, arg);
         return true;
     }

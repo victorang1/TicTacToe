@@ -7,6 +7,7 @@ import com.example.victor_pc.tictactoe.database.DatabaseOpenHelper;
 import com.example.victor_pc.tictactoe.home.HomeActivity;
 import com.example.victor_pc.tictactoe.model.Board;
 import com.example.victor_pc.tictactoe.model.GameBoard;
+import com.example.victor_pc.tictactoe.model.User;
 
 import java.util.List;
 import java.util.Random;
@@ -252,13 +253,10 @@ public class GameViewModel {
     public int getEvent() {
         if(checkPlayerBoard() == true) {
             gameBoard.setEventId(GameBoard.WIN);
-            gameBoard.setFinish(true);
         } else if(checkBotBoard() == true) {
             gameBoard.setEventId(GameBoard.LOSE);
-            gameBoard.setFinish(true);
         } else if(isFieldFull()) {
             gameBoard.setEventId(GameBoard.DRAW);
-            gameBoard.setFinish(true);
         }
         return gameBoard.getEventId();
     }
@@ -275,12 +273,13 @@ public class GameViewModel {
     }
 
     public void updateStatus(int status) {
-        databaseOpenHelper.insertStatus(status);
-    }
-
-    public boolean checkFinish() {
-        if(gameBoard.isFinish()) {
-            return true;
-        } else return false;
+        User user = databaseOpenHelper.getHomeData();
+        if(status == 1) {
+            databaseOpenHelper.insertStatus(user.getTotalMatch()+1, user.getWin()+1, user.getLose());
+        } else if(status == 2) {
+            databaseOpenHelper.insertStatus(user.getTotalMatch()+1, user.getWin(), user.getLose()+1);
+        } else if (status == 3) {
+            databaseOpenHelper.insertStatus(user.getTotalMatch()+1, user.getWin(), user.getLose());
+        }
     }
 }

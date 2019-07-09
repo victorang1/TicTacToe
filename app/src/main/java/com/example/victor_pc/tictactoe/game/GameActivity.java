@@ -68,14 +68,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         else if(v == mBinding.square9) {
             index = 8;
         }
-        int eventId = mViewModel.getEvent();
-        if(eventId == GameBoard.PLAYING) {
-            inputBoard(index);
-        }
-        if(eventId == GameBoard.PLAYING) {
-            inputBoard(mViewModel.getBotChoice());
-        }
-        else if(v == mBinding.btnPlay) {
+        input(index);
+        if(v == mBinding.btnPlay) {
             restartGame();
         }
         else if(v == mBinding.btnQuit) {
@@ -84,33 +78,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void inputBoard(int position) {
-        if(position == -1) {
-
+    private void input(int position) {
+        int eventId = mViewModel.getEvent();
+        if(eventId == GameBoard.PLAYING) {
+            inputBoard(position);
         }
-        else if(mViewModel.checkBoard(position)) {
+        if(eventId == GameBoard.PLAYING) {
+            inputBoard(mViewModel.getBotChoice());
+        }
+    }
+
+    private void inputBoard(int position) {
+        if(position != -1 && mViewModel.checkBoard(position)) {
             mViewModel.setTileOwner(position);
-            if(mViewModel.isPlayerTurn()) {
-                if(position == 0) mBinding.square1.setBackgroundResource(R.drawable.playertile);
-                else if(position == 1) mBinding.square2.setBackgroundResource(R.drawable.playertile);
-                else if(position == 2) mBinding.square3.setBackgroundResource(R.drawable.playertile);
-                else if(position == 3) mBinding.square4.setBackgroundResource(R.drawable.playertile);
-                else if(position == 4) mBinding.square5.setBackgroundResource(R.drawable.playertile);
-                else if(position == 5) mBinding.square6.setBackgroundResource(R.drawable.playertile);
-                else if(position == 6) mBinding.square7.setBackgroundResource(R.drawable.playertile);
-                else if(position == 7) mBinding.square8.setBackgroundResource(R.drawable.playertile);
-                else if(position == 8) mBinding.square9.setBackgroundResource(R.drawable.playertile);
-            } else {
-                if(position == 0) mBinding.square1.setBackgroundResource(R.drawable.bottile);
-                else if(position == 1) mBinding.square2.setBackgroundResource(R.drawable.bottile);
-                else if(position == 2) mBinding.square3.setBackgroundResource(R.drawable.bottile);
-                else if(position == 3) mBinding.square4.setBackgroundResource(R.drawable.bottile);
-                else if(position == 4) mBinding.square5.setBackgroundResource(R.drawable.bottile);
-                else if(position == 5) mBinding.square6.setBackgroundResource(R.drawable.bottile);
-                else if(position == 6) mBinding.square7.setBackgroundResource(R.drawable.bottile);
-                else if(position == 7) mBinding.square8.setBackgroundResource(R.drawable.bottile);
-                else if(position == 8) mBinding.square9.setBackgroundResource(R.drawable.bottile);
-            }
+            int color = mViewModel.isPlayerTurn() ? R.drawable.playertile : R.drawable.bottile;
+            if(position == 0) mBinding.square1.setBackgroundResource(color);
+            else if(position == 1) mBinding.square2.setBackgroundResource(color);
+            else if(position == 2) mBinding.square3.setBackgroundResource(color);
+            else if(position == 3) mBinding.square4.setBackgroundResource(color);
+            else if(position == 4) mBinding.square5.setBackgroundResource(color);
+            else if(position == 5) mBinding.square6.setBackgroundResource(color);
+            else if(position == 6) mBinding.square7.setBackgroundResource(color);
+            else if(position == 7) mBinding.square8.setBackgroundResource(color);
+            else if(position == 8) mBinding.square9.setBackgroundResource(color);
             checkEvent();
             if(mViewModel.getEvent() == GameBoard.PLAYING) {
                 mViewModel.changeTurn();
@@ -121,15 +111,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void checkEvent() {
         int eventId = mViewModel.getEvent();
         if(eventId != GameBoard.PLAYING) {
-            if(eventId == GameBoard.DRAW) {
-                mBinding.status.setText(R.string.youDraw);
-            } else if(eventId == GameBoard.LOSE) {
-                mBinding.status.setText(R.string.youLose);
-            } else if(eventId == GameBoard.WIN) {
-                mBinding.status.setText(R.string.youWin);
-            }
+            int text = eventId == 1 ? R.string.youWin : eventId == 2 ? R.string.youLose : eventId == 3 ? R.string.youDraw : null;
+            mBinding.status.setText(text);
             disableLayoutTouch();
-            mViewModel.updateStatus(mViewModel.getEvent());
+            mViewModel.updateStatus(eventId);
         }
     }
 

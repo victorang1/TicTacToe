@@ -41,23 +41,17 @@ public class SessionManager {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
-    public void checkLogin() {
-        if(!this.isLoggedIn()) {
-            Intent intent = new Intent(context, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        } else {
-            Session.email = getUserEmail();
-        }
+    public boolean checkLogin() {
+        if(this.isLoggedIn()) {
+            return true;
+        } else return false;
     }
 
-    public void logoutUser() {
-         editor.clear();
-         editor.commit();
-         Intent intent = new Intent(context, LoginActivity.class);
-         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-         context.startActivity(intent);
+    public boolean logoutUser() {
+         if(this.isLoggedIn()) {
+             editor.clear();
+             editor.commit();
+             return true;
+         } else return false;
     }
 }

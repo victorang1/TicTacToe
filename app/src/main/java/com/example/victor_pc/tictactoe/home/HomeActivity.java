@@ -22,9 +22,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         session = new SessionManager(getApplicationContext());
-        session.checkLogin();
+        checkSession();
         mBinding.setViewModel(new User());
         initListener();
+    }
+
+    private void checkSession() {
+        if(session.checkLogin()) {
+            Session.email = session.getUserEmail();
+        } else {
+            finish();
+            startActivity(mViewModel.gotoLoginActivity());
+        }
     }
 
     public void initListener() {
@@ -49,7 +58,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void userLogout() {
         Session.email = null;
-        session.logoutUser();
+        if(session.logoutUser()) {
+            startActivity(mViewModel.gotoLoginActivity());
+        }
     }
 
     @Override

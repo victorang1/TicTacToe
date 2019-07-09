@@ -21,8 +21,8 @@ public class GameBoard extends BaseObservable {
     public boolean playerTurnVisibility;
     public boolean botTurnVisibility;
     public boolean statusVisibility;
+    public boolean buttonPlayAndQuitVisibility;
     public boolean yourTurn;
-    public boolean isFinish;
 
     public static final int PLAYING = 0;
     public static final int WIN = 1;
@@ -49,6 +49,7 @@ public class GameBoard extends BaseObservable {
         this.eventId = eventId;
         notifyPropertyChanged(BR.eventId);
         notifyPropertyChanged(BR.statusVisibility);
+        notifyPropertyChanged(BR.buttonPlayAndQuitVisibility);
         return this;
     }
 
@@ -110,13 +111,13 @@ public class GameBoard extends BaseObservable {
     }
 
     @Bindable
-    public boolean isFinish() {
-        return isFinish;
+    public int getButtonPlayAndQuitVisibility() {
+        return eventId == 0 ? View.GONE : View.VISIBLE;
     }
 
-    public GameBoard setFinish(boolean finish) {
-        isFinish = finish;
-        notifyPropertyChanged(BR.finish);
+    public GameBoard setButtonPlayAndQuitVisibility(boolean buttonPlayAndQuitVisibility) {
+        this.buttonPlayAndQuitVisibility = buttonPlayAndQuitVisibility;
+        notifyPropertyChanged(BR.buttonPlayAndQuitVisibility);
         return this;
     }
 }
