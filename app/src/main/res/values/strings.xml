@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">TicTacToe</string>
+    <string name="total_matches">Matches : %d</string>
+    <string name="total_win">Win : %d</string>
+    <string name="total_lose">Lose : %d</string>
+    <string name="status">Stats:</string>
+    <string name="yourTurn">Your turn</string>
+    <string name="me">You</string>
+    <string name="bot">Bot %s</string>
+    <string name="botTurn">Bot turn</string>
+    <string name="youWin">You Win</string>
+    <string name="youLose">You Lose</string>
+    <string name="youDraw">You Draw</string>
+</resources>

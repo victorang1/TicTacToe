@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.victor_pc.tictactoe.model.User">
+        </variable>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="50dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="30dp"
+                android:layout_marginBottom="50dp"
+                android:text="Login Page"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:textAlignment="center"
+                android:text="Email"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your email"
+                android:text="@={viewModel.email}"
+                android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:textAlignment="center"
+                android:text="Password"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your password"
+                android:inputType="textPassword"
+                android:text="@={viewModel.password}"
+                android:layout_marginBottom="20dp"/>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.Widget.AppCompat.Button"
+                android:text="Login"
+                android:textSize="25dp"
+                android:background="@color/green"
+                android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:id="@+id/txtGotoRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_marginBottom="20dp"
+                android:text="Doesn't have an account? Register here"
+                android:textSize="16dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>
