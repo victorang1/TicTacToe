@@ -52,4 +52,10 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(mViewModel.gotoHomeActivity());
+    }
 }
