@@ -79,154 +79,243 @@ public class GameViewModel {
         return intent;
     }
 
-    public boolean checkBotBoard() {
+    public int checkPlayerBoard() {
         int flag = 0;
-        int temp = 0;
-        int max = 3;
-        int i;
 
-        //Check left to right each row
-        while (max <= 9) {
-            for(i = temp; i < max; i++) {
-                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
+        //Check every row
+        for(int i = 0; i < 9; i += 3) {
+            if(gameBoard.getListBoard().get(i).isFilled) {
+                if(gameBoard.getListBoard().get(i).isPlayerTile() &&
+                        gameBoard.getListBoard().get(i+1).isPlayerTile() &&
+                        gameBoard.getListBoard().get(i+2).isPlayerTile()) {
                     flag = 1;
-                } else {
-                    flag = 0;
+                    break;
+                } else if(gameBoard.getListBoard().get(i).isBotTile() &&
+                        gameBoard.getListBoard().get(i+1).isBotTile() &&
+                        gameBoard.getListBoard().get(i+2).isBotTile()) {
+                    flag = 2;
                     break;
                 }
             }
-            if(flag == 1) break;
-
-            temp = max;
-            max = max + 3;
         }
 
-        if(flag == 1) return true;
+        if(flag == 1 || flag == 2) {
+            return flag;
+        }
 
         flag = 0;
-        temp = 0;
 
-        //Check top to bottom each column
-        while(temp <= 2) {
-            for(i = temp; i < 9; i += 3) {
-                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
+        //Check every column
+        for(int i = 0; i < 3; i++) {
+            if(gameBoard.getListBoard().get(i).isFilled) {
+                if(gameBoard.getListBoard().get(i).isPlayerTile() &&
+                        gameBoard.getListBoard().get(i+3).isPlayerTile() &&
+                        gameBoard.getListBoard().get(i+6).isPlayerTile()) {
                     flag = 1;
-                } else {
-                    flag = 0;
+                    break;
+                }
+                else if(gameBoard.getListBoard().get(i).isBotTile() &&
+                        gameBoard.getListBoard().get(i+3).isBotTile() &&
+                        gameBoard.getListBoard().get(i+6).isBotTile()) {
+                    flag = 2;
                     break;
                 }
             }
-            if(flag == 1) break;
-            temp++;
         }
 
-        if(flag == 1) return true;
+        if(flag == 1 || flag == 2) {
+            return flag;
+        }
 
         flag = 0;
 
-        //Check diagonal from top left to bottom right
-        for(i = 0; i < 9; i += 4) {
-            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
-                flag = 1;
-            } else {
-                flag = 0;
-                break;
+        //check diagonal
+        for(int i = 0; i < 2; i++) {
+            if(i == 0) {
+                if(gameBoard.getListBoard().get(i).isFilled) {
+                    if(gameBoard.getListBoard().get(i).isPlayerTile() &&
+                            gameBoard.getListBoard().get(i+4).isPlayerTile() &&
+                            gameBoard.getListBoard().get(i+8).isPlayerTile()) {
+                        flag = 1;
+                        break;
+                    } else if(gameBoard.getListBoard().get(i).isBotTile() &&
+                            gameBoard.getListBoard().get(i+4).isBotTile() &&
+                            gameBoard.getListBoard().get(i+8).isBotTile()) {
+                        flag = 2;
+                        break;
+                    }
+                }
+            } else if(i == 1) {
+                if(gameBoard.getListBoard().get(i+1).isFilled) {
+                    if(gameBoard.getListBoard().get(i+1).isPlayerTile() &&
+                            gameBoard.getListBoard().get(i+3).isPlayerTile() &&
+                            gameBoard.getListBoard().get(i+5).isPlayerTile()) {
+                        flag = 1;
+                        break;
+                    } else if(gameBoard.getListBoard().get(i).isBotTile() &&
+                            gameBoard.getListBoard().get(i+3).isBotTile() &&
+                            gameBoard.getListBoard().get(i+5).isBotTile()) {
+                        flag = 2;
+                        break;
+                    }
+                }
             }
         }
-
-        if(flag == 1) return true;
-
-        flag = 0;
-
-        //Check diagonal from top right to bottom left
-        for(i = 2; i <= 6; i += 2) {
-            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
-                flag = 1;
-            } else {
-                flag = 0;
-                break;
-            }
+        if(flag == 1 || flag == 2) {
+            return flag;
         }
 
-        if(flag == 1) return true;
-
-        return false;
+        return -1;
     }
 
-    public boolean checkPlayerBoard() {
-
-        int flag = 0;
-        int temp = 0;
-        int max = 3;
-        int i;
-
-        //Check left to right each row
-        while (max <= 9) {
-            for(i = temp; i < max; i++) {
-                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
-                    flag = 1;
-                } else {
-                    flag = 0;
-                    break;
-                }
-            }
-            if(flag == 1) break;
-
-            temp = max;
-            max = max + 3;
-        }
-
-        if(flag == 1) return true;
-
-        flag = 0;
-        temp = 0;
-
-        //Check top to bottom each column
-        while(temp <= 2) {
-            for(i = temp; i < 9; i += 3) {
-                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
-                    flag = 1;
-                } else {
-                    flag = 0;
-                    break;
-                }
-            }
-            if(flag == 1) break;
-            temp++;
-        }
-
-        if(flag == 1) return true;
-
-        flag = 0;
-
-        //Check diagonal from top left to bottom right
-        for(i = 0; i < 9; i += 4) {
-            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
-                flag = 1;
-            } else {
-                flag = 0;
-                break;
-            }
-        }
-
-        if(flag == 1) return true;
-
-        flag = 0;
-
-        //Check diagonal from top right to bottom left
-        for(i = 2; i <= 6; i += 2) {
-            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
-                flag = 1;
-            } else {
-                flag = 0;
-                break;
-            }
-        }
-
-        if(flag == 1) return true;
-
-        return false;
-    }
+//    public boolean checkBotBoard() {
+//        int flag = 0;
+//        int temp = 0;
+//        int max = 3;
+//        int i;
+//
+//        //Check left to right each row
+//        while (max <= 9) {
+//            for(i = temp; i < max; i++) {
+//                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
+//                    flag = 1;
+//                } else {
+//                    flag = 0;
+//                    break;
+//                }
+//            }
+//            if(flag == 1) break;
+//
+//            temp = max;
+//            max = max + 3;
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        flag = 0;
+//        temp = 0;
+//
+//        //Check top to bottom each column
+//        while(temp <= 2) {
+//            for(i = temp; i < 9; i += 3) {
+//                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
+//                    flag = 1;
+//                } else {
+//                    flag = 0;
+//                    break;
+//                }
+//            }
+//            if(flag == 1) break;
+//            temp++;
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        flag = 0;
+//
+//        //Check diagonal from top left to bottom right
+//        for(i = 0; i < 9; i += 4) {
+//            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
+//                flag = 1;
+//            } else {
+//                flag = 0;
+//                break;
+//            }
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        flag = 0;
+//
+//        //Check diagonal from top right to bottom left
+//        for(i = 2; i <= 6; i += 2) {
+//            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isBotTile()) {
+//                flag = 1;
+//            } else {
+//                flag = 0;
+//                break;
+//            }
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        return false;
+//    }
+//
+//    public boolean checkPlayerBoard() {
+//
+//        int flag = 0;
+//        int temp = 0;
+//        int max = 3;
+//        int i;
+//
+//        //Check left to right each row
+//        while (max <= 9) {
+//            for(i = temp; i < max; i++) {
+//                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
+//                    flag = 1;
+//                } else {
+//                    flag = 0;
+//                    break;
+//                }
+//            }
+//            if(flag == 1) break;
+//
+//            temp = max;
+//            max = max + 3;
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        flag = 0;
+//        temp = 0;
+//
+//        //Check top to bottom each column
+//        while(temp <= 2) {
+//            for(i = temp; i < 9; i += 3) {
+//                if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
+//                    flag = 1;
+//                } else {
+//                    flag = 0;
+//                    break;
+//                }
+//            }
+//            if(flag == 1) break;
+//            temp++;
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        flag = 0;
+//
+//        //Check diagonal from top left to bottom right
+//        for(i = 0; i < 9; i += 4) {
+//            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
+//                flag = 1;
+//            } else {
+//                flag = 0;
+//                break;
+//            }
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        flag = 0;
+//
+//        //Check diagonal from top right to bottom left
+//        for(i = 2; i <= 6; i += 2) {
+//            if(gameBoard.getListBoard().get(i).isFilled && gameBoard.getListBoard().get(i).isPlayerTile()) {
+//                flag = 1;
+//            } else {
+//                flag = 0;
+//                break;
+//            }
+//        }
+//
+//        if(flag == 1) return true;
+//
+//        return false;
+//    }
 
     public void changeTurn() {
         if(gameBoard.isYourTurn()) {
@@ -251,15 +340,30 @@ public class GameViewModel {
     }
 
     public int getEvent() {
-        if(checkPlayerBoard() == true) {
-            gameBoard.setEventId(GameBoard.WIN);
-        } else if(checkBotBoard() == true) {
-            gameBoard.setEventId(GameBoard.LOSE);
-        } else if(isFieldFull()) {
+        int id = checkPlayerBoard();
+        if(id != -1) {
+            if(id == 1) {
+                gameBoard.setEventId(GameBoard.WIN);
+            } else if(id == 2) {
+                gameBoard.setEventId(GameBoard.LOSE);
+            }
+        }
+        if(id == -1 && isFieldFull()) {
             gameBoard.setEventId(GameBoard.DRAW);
         }
         return gameBoard.getEventId();
     }
+
+//    public int getEvent() {
+//        if(checkPlayerBoard() == true) {
+//            gameBoard.setEventId(GameBoard.WIN);
+//        } else if(checkBotBoard() == true) {
+//            gameBoard.setEventId(GameBoard.LOSE);
+//        } else if(isFieldFull()) {
+//            gameBoard.setEventId(GameBoard.DRAW);
+//        }
+//        return gameBoard.getEventId();
+//    }
 
     public int getBotChoice() {
         if(!isPlayerTurn() && !isFieldFull()) {

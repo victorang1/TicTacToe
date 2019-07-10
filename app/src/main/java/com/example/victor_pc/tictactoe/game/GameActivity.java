@@ -80,6 +80,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void input(int position) {
         int eventId = mViewModel.getEvent();
+        Log.d("<EVENTID>", "input: " + eventId);
         if(eventId == GameBoard.PLAYING) {
             inputBoard(position);
         }
